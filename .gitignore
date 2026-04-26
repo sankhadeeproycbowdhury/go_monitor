@@ -1,0 +1,57 @@
+# Binary output
+go-monitor
+go-monitor.exe
+*.exe
+*.out
+*.test
+*.prof
+
+# Build artifacts
+/dist/
+/bin/
+/build/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+kubeconfig
+kubeconfig.*
+config.yaml
+secrets.yaml
+
+# Go toolchain
+vendor/
+*.sum.bak
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Test & coverage
+coverage.out
+coverage.html
+*.coverprofile
+
+# Docker
+.dockerignore.bak
+
+# Kubernetes / Helm
+*.kubeconfig
+helm/charts/*.tgz
+/k8s/secrets/
+
+# Logs
+*.log
+logs/
+
+# Air (live reload tool)
+tmp/
