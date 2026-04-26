@@ -15,6 +15,7 @@ import (
 
 // Scaler watches aggregated CPU metrics and patches Kubernetes replicas.
 type Scaler struct {
+    disabled    bool   // ← add this line
     client      kubernetes.Interface
     namespace   string
     deployment  string
@@ -52,14 +53,18 @@ func New(
 
 // Evaluate checks cpu avg against thresholds and scales if needed.
 func (s *Scaler) Evaluate(ctx context.Context, cpuAvg float64) {
+    if s.disabled {         
+        return
+    }
     if time.Since(s.lastScaled) < s.cooldown {
-        return // still in cooldown
+        return
     }
 
     dep, err := s.client.AppsV1().Deployments(s.namespace).
         GetScale(ctx, s.deployment, metav1.GetOptions{})
     if err != nil {
-        log.Printf("scaler: get scale error: %v", err)
+        log.Printf("scaler: K8s unavailable, disabling scaler: %v", err)
+        s.disabled = true    // ← add this line
         return
     }
 
